@@ -2,6 +2,8 @@ package com.sample.githubtrending
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -9,9 +11,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun getTrendingRepositories() {
+    fun getTrendingRepositories(period: GithubClient.TrendingPeriod): Observable<List<Repo>> {
         val githubClient = ServiceGenerator.createService(GithubClient::class.java)
-        githubClient.fetchTrendingRepos(GithubClient.TrendingPeriod.WEEKLY.name)
+        return githubClient
+                .fetchTrendingRepos(period.periodString)
+                .subscribeOn(Schedulers.io())
     }
 
 }

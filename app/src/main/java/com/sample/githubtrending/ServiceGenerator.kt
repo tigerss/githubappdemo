@@ -1,7 +1,7 @@
 package com.sample.githubtrending
 
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceGenerator {
@@ -10,10 +10,9 @@ object ServiceGenerator {
     private val builder = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 
     private val retrofit = builder.build()
-
-    private val httpClient = OkHttpClient.Builder()
 
     fun <S> createService(
             serviceClass: Class<S>): S {

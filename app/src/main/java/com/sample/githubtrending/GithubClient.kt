@@ -6,12 +6,14 @@ import retrofit2.http.Query
 
 interface GithubClient {
 
-    enum class TrendingPeriod(val period: String) {
+    enum class TrendingPeriod(period: String) {
         DAILY("daily"),
         WEEKLY("weekly"),
-        MONTHLY("monthly")
+        MONTHLY("monthly");
+
+        val periodString = period
     }
 
     @GET("/repositories")
-    fun fetchTrendingRepos(@Query("since") since: String): Observable<Repo>
+    fun fetchTrendingRepos(@Query("since") since: String): Observable<List<Repo>>
 }
