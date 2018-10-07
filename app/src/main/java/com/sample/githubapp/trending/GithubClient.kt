@@ -1,4 +1,4 @@
-package com.sample.githubtrending
+package com.sample.githubapp.trending
 
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -15,5 +15,5 @@ interface GithubClient {
     }
 
     @GET("/repositories")
-    fun fetchTrendingRepos(@Query("since") since: String): Observable<List<Repo>>
+    fun fetchTrendingRepos(@Query("since") since: String): Observable<List<GithubRepo>>
 }

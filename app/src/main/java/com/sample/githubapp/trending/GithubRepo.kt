@@ -1,6 +1,6 @@
-package com.sample.githubtrending
+package com.sample.githubapp.trending
 
-class Repo {
+class GithubRepo {
 
     var name: String = ""
     var stars: Int = 0

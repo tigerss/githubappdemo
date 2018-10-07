@@ -1,4 +1,4 @@
-package com.sample.githubtrending
+package com.sample.githubapp
 
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

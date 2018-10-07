@@ -1,7 +1,8 @@
-package com.sample.githubtrending
+package com.sample.githubapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.sample.githubapp.trending.RepositoriesFragment
 
 class MainActivity : AppCompatActivity() {
 
