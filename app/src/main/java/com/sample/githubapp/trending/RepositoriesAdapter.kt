@@ -8,16 +8,29 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.repositories_list_item.view.*
 import com.sample.githubapp.R
 
-class RepositoriesAdapter(items:List<GithubRepo>): RecyclerView.Adapter<RepositoriesAdapter.ViewHolder>() {
+typealias RepoClickListener = (View, GithubRepo) -> Unit
+
+class RepositoriesAdapter(
+        items:List<GithubRepo>,
+        private val onRepoClickListener: RepoClickListener
+): RecyclerView.Adapter<RepositoriesAdapter.ViewHolder>() {
 
     private var repositories: List<GithubRepo> = items
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.repositories_list_item, parent, false))
+        return ViewHolder(
+                LayoutInflater.from(parent.context)
+                .inflate(R.layout.repositories_list_item, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvRepoName.text = repositories[position].name
+        val repository = repositories[position]
+        holder.tvRepoName.text = repository.name
+
+        holder.itemView.setOnClickListener { view ->
+            onRepoClickListener(view, repository)
+        }
     }
 
     override fun getItemCount(): Int {

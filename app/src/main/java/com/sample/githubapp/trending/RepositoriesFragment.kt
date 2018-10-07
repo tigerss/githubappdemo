@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,10 +15,13 @@ import com.sample.githubapp.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
-private const val TAG = "RepositoriesFragment"
-
 class RepositoriesFragment : Fragment() {
 
+    companion object {
+        private const val TAG = "RepositoriesFragment"
+    }
+
+    private lateinit var loading: ProgressBar
     private lateinit var repoRecycler: RecyclerView
     private lateinit var repoAdapter: RepositoriesAdapter
 
@@ -35,10 +39,12 @@ class RepositoriesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        loading = view.findViewById(R.id.repositoriesLoading)
+
         repoRecycler = view.findViewById(R.id.repositoriesList)
         repoRecycler.layoutManager = LinearLayoutManager(context)
 
-        repoAdapter = RepositoriesAdapter(ArrayList())
+        repoAdapter = RepositoriesAdapter(ArrayList(), this::onRepositoryClicked)
         repoRecycler.adapter = repoAdapter
     }
 
@@ -54,14 +60,22 @@ class RepositoriesFragment : Fragment() {
         unbindViewModel()
     }
 
+    private fun onRepositoryClicked(view: View, repository: GithubRepo) {
+        var repositoryDetailFragment = RepositoryDetailFragment.newInstance(repository)
+        fragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.main_content, repositoryDetailFragment, RepositoryDetailFragment.TAG)
+                ?.addToBackStack(null)
+                ?.commit()
+    }
+
     private fun bindViewModel() {
         val disposable = mainViewModel.getTrendingRepositories(GithubClient.TrendingPeriod.WEEKLY)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showLoading() }
+                .doOnTerminate { hideLoading() }
                 .subscribe(
                         { repositories ->
-//                            for (repo in repositories) {
-//                                Log.d(TAG, repo.toString())
-//                            }
                             refreshRepositories(repositories)
                         },
                         {
@@ -79,6 +93,14 @@ class RepositoriesFragment : Fragment() {
 
     private fun unbindViewModel() {
         subscriptions.dispose()
+    }
+
+    private fun showLoading() {
+        loading.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loading.visibility = View.GONE
     }
 
     private fun getSubscriptions(): CompositeDisposable {

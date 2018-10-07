@@ -15,6 +15,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+            return
+        }
+
+        super.onBackPressed()
+    }
+
     private fun addTrendingFragment() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.main_content, RepositoriesFragment())

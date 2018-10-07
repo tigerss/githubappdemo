@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Github Trends</string>
+
+    <string name="repo_detail_name">Repository</string>
+    <string name="repo_detail_author">Author</string>
+    <string name="repo_detail_url">URL</string>
+    <string name="repo_detail_description">Description</string>
+    <string name="repo_detail_language">Language</string>
+    <string name="repo_detail_stars">Stars</string>
 </resources>

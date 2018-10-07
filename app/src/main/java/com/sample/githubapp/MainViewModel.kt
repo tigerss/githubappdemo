@@ -9,10 +9,6 @@ import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    init {
-
-    }
-
     fun getTrendingRepositories(period: GithubClient.TrendingPeriod): Observable<List<GithubRepo>> {
         val githubClient = ServiceGenerator.createService(GithubClient::class.java)
         return githubClient
